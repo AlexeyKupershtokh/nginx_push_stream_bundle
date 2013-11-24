@@ -1,0 +1,3 @@
+nginx_push_stream_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: NginxPushStreamBundle:Default:index }
