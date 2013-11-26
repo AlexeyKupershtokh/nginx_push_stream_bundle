@@ -20,10 +20,73 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('nginx_push_stream');
 
+        $rootNode
+            ->beforeNormalization()
+                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('connections', $v) && !array_key_exists('connection', $v); })
+                ->then(function ($v) {
+                    // Key that should not be rewritten to the connection config
+                    $excludedKeys = array('default_connection' => true);
+                    $connection = array_diff_key($v, $excludedKeys);
+                    $v = array_intersect_key($v, $excludedKeys);
+                    $v['default_connection'] = isset($v['default_connection']) ? (string) $v['default_connection'] : 'default';
+                    $v['connections'] = array($v['default_connection'] => $connection);
+
+                    return $v;
+                })
+                ->end()
+            ->children()
+                ->scalarNode('default_connection')->end()
+            ->end()
+            ->append($this->getConnectionsNode())
+            ->end();
+
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
 
         return $treeBuilder;
+    }
+
+    public function getConnectionsNode() {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('connections');
+
+        /** @var $connectionNode ArrayNodeDefinition */
+        $connectionNode = $node
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->fixXmlConfig('sub_url')
+            ->fixXmlConfig('enclose')
+            ->performNoDeepMerging()
+            ->children()
+                ->scalarNode('pub_url')->isRequired()->defaultValue('http://example.com/pub/?id={token}')->end()
+                ->arrayNode('sub_urls')
+                    ->isRequired()
+                    ->prototype('scalar')
+                    ->end()
+                    ->defaultValue(array(
+                        'polling' => 'http://example.com/sub-p/{tokens}',
+                        'long-polling' => 'http://example.com/sub-lp/{tokens}',
+                        'streaming' => 'http://example.com/sub-s/{tokens}',
+                        'eventsource' => 'http://example.com/sub-ev/{tokens}',
+                    ))
+                ->end()
+                ->booleanNode('logging')->end()
+                ->booleanNode('profiling')->end()
+                ->arrayNode('encloses')
+                    ->performNoDeepMerging()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                        ->scalarNode('class')->end()
+                        ->arrayNode('params')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
     }
 }
