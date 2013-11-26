@@ -1,5 +1,9 @@
-nginx_push_stream_git_sub_urls:
+nginx_push_stream_get_sub_urls:
     pattern:  /get-sub-urls/{tokens}
     defaults: { _controller: NginxPushStreamBundle:Default:getSubUrls }
     requirements:
         tokens: "^\w+(,\w+)*$"
+
+nginx_push_stream_pub:
+    pattern: /pub
+    defaults: { _controller: NginxPushStreamBundle:Default:pub }
