@@ -60,29 +60,34 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('enclose')
             ->performNoDeepMerging()
             ->children()
-                ->scalarNode('pub_url')->isRequired()->defaultValue('http://example.com/pub/?id={token}')->end()
+                ->scalarNode('pub_url')
+                    ->isRequired()
+                    ->example('http://example.com/pub/?id={token}')
+                ->end()
                 ->arrayNode('sub_urls')
                     ->isRequired()
                     ->prototype('scalar')
                     ->end()
-                    ->defaultValue(array(
+                    ->example(array(
                         'polling' => 'http://example.com/sub-p/{tokens}',
                         'long-polling' => 'http://example.com/sub-lp/{tokens}',
                         'streaming' => 'http://example.com/sub-s/{tokens}',
                         'eventsource' => 'http://example.com/sub-ev/{tokens}',
                     ))
                 ->end()
-                ->booleanNode('logging')->end()
-                ->booleanNode('profiling')->end()
                 ->arrayNode('encloses')
                     ->performNoDeepMerging()
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                        ->scalarNode('class')->end()
-                        ->arrayNode('params')->end()
+                            ->scalarNode('class')->end()
+                            ->arrayNode('params')->end()
                         ->end()
                     ->end()
+                    ->example(array(
+                        array('class' => 'hash', 'params' => array()),
+                        array('class' => 'prefix', 'params' => array()),
+                    ))
                 ->end()
             ->end()
         ;
