@@ -1,3 +1,5 @@
 nginx_push_stream_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: NginxPushStreamBundle:Default:index }
+    pattern:  /get-sub-urls/{tokens}
+    defaults: { _controller: NginxPushStreamBundle:Default:getSubUrls }
+    requirements:
+        tokens: "^\w+(,\w+)*$"

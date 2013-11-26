@@ -3,11 +3,12 @@
 namespace Alawar\NginxPushStreamBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function getSubUrlsAction($tokens)
     {
-        return $this->render('NginxPushStreamBundle:Default:index.html.twig', array('name' => $name));
+        return new Response(json_encode($tokens));
     }
 }
