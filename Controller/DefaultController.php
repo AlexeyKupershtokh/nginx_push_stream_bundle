@@ -15,7 +15,7 @@ class DefaultController extends Controller
 
     public function pubAction(Request $request)
     {
-
+        $this->get('nginx_push_stream.default_connection');
         return new Response(json_encode('ok'));
     }
 }

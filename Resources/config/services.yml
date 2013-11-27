@@ -1,7 +1,10 @@
 parameters:
-#    nginx_push_stream.example.class: Alawar\NginxPushStreamBundle\Example
+    nginx_push_stream.connection.class: Alawar\NginxPushStreamBundle\Connection\Connection
+    nginx_push_stream.enclose.hash.class: Alawar\NginxPushStreamBundle\Enclose\HashEnclose
+    nginx_push_stream.enclose.prefix.class: Alawar\NginxPushStreamBundle\Enclose\PrefixEnclose
 
 services:
-#    nginx_push_stream.example:
-#        class: %nginx_push_stream.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    nginx_push_stream.connection_prototype:
+        class: %nginx_push_stream.connection.class%
+        abstract: true
+        #arguments: [@service_id, %parameter%]
