@@ -57,7 +57,7 @@ class Configuration implements ConfigurationInterface
             ->useAttributeAsKey('name')
             ->prototype('array')
             ->fixXmlConfig('sub_url')
-            ->fixXmlConfig('enclose')
+            ->fixXmlConfig('filter')
             ->performNoDeepMerging()
             ->children()
                 ->scalarNode('pub_url')
@@ -75,13 +75,12 @@ class Configuration implements ConfigurationInterface
                         'eventsource' => 'http://example.com/sub-ev/{tokens}',
                     ))
                 ->end()
-                ->arrayNode('encloses')
+                ->arrayNode('filters')
                     ->performNoDeepMerging()
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('class')->end()
-                            ->arrayNode('params')->end()
                         ->end()
                     ->end()
                     ->example(array(

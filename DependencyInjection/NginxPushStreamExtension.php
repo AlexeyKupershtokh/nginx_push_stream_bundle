@@ -38,8 +38,8 @@ class NginxPushStreamExtension extends Extension
             new DefinitionDecorator('nginx_push_stream.connection_prototype')
         );
         $definition->setArguments(array($connection['pub_url'], $connection['sub_urls']));
-        foreach ($connection['encloses'] as $enclose) {
-            $definition->addMethodCall('addEnclose');
+        foreach ($connection['filters'] as $filter) {
+            $definition->addMethodCall('addFilter', $filter);
         }
     }
 }
