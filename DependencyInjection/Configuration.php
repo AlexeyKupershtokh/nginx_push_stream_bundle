@@ -7,8 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -22,23 +20,25 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->beforeNormalization()
-                ->ifTrue(function ($v) { return is_array($v) && !array_key_exists('connections', $v) && !array_key_exists('connection', $v); })
+                ->ifTrue(function ($v) {
+                    return is_array($v) && !array_key_exists('connections', $v) && !array_key_exists('connection', $v);
+                })
                 ->then(function ($v) {
                     // Key that should not be rewritten to the connection config
                     $excludedKeys = array('default_connection' => true);
                     $connection = array_diff_key($v, $excludedKeys);
                     $v = array_intersect_key($v, $excludedKeys);
-                    $v['default_connection'] = isset($v['default_connection']) ? (string) $v['default_connection'] : 'default';
+                    $v['default_connection'] = isset($v['default_connection']) ? (string)$v['default_connection'] : 'default';
                     $v['connections'] = array($v['default_connection'] => $connection);
 
                     return $v;
                 })
-                ->end()
+            ->end()
             ->children()
                 ->scalarNode('default_connection')->end()
             ->end()
             ->append($this->getConnectionsNode())
-            ->end();
+        ->end();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
@@ -47,7 +47,8 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    public function getConnectionsNode() {
+    public function getConnectionsNode()
+    {
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('connections');
 
@@ -55,10 +56,10 @@ class Configuration implements ConfigurationInterface
         $connectionNode = $node
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
-            ->prototype('array')
             ->fixXmlConfig('sub_url')
             ->fixXmlConfig('filter')
             ->performNoDeepMerging()
+            ->prototype('array')
             ->children()
                 ->scalarNode('pub_url')
                     ->isRequired()
@@ -77,15 +78,17 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('filters')
                     ->performNoDeepMerging()
-                    ->useAttributeAsKey('name')
+                    ->useAttributeAsKey('id')
                     ->prototype('array')
+                        ->prototype('scalar')
+                        ->end()
                         ->children()
                             ->scalarNode('class')->end()
                         ->end()
                     ->end()
                     ->example(array(
-                        array('class' => 'hash', 'params' => array()),
-                        array('class' => 'prefix', 'params' => array()),
+                        'hash' => array('class' => 'hash', 'secret' => 'mysecret'),
+                        'prefix' => array('class' => 'prefix', 'prefix' => 'myapp_'),
                     ))
                 ->end()
             ->end()
