@@ -4,7 +4,9 @@ namespace Alawar\NginxPushStreamBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -29,6 +31,12 @@ class NginxPushStreamExtension extends Extension
         foreach ($config['connections'] as $name => $connection) {
             $this->buildConnection($container, $name, $connection);
         }
+
+        if (isset($config['shared_filters']) && is_array($config['shared_filters'])) {
+            foreach ($config['shared_filters'] as $id => $filter) {
+                $this->buildFilter($container, $id, $filter);
+            }
+        }
     }
 
     protected function buildConnection(ContainerBuilder $container, $name, $connection)
@@ -37,9 +45,26 @@ class NginxPushStreamExtension extends Extension
             sprintf('nginx_push_stream.%s_connection', $name),
             new DefinitionDecorator('nginx_push_stream.connection_prototype')
         );
+
         $definition->setArguments(array($connection['pub_url'], $connection['sub_urls']));
-        foreach ($connection['filters'] as $filter) {
-            $definition->addMethodCall('addFilter', $filter);
+        foreach ($connection['filters'] as $id => $filter) {
+            $filterServiceId = $this->buildFilter($container, $id, $filter);
+            $definition->addMethodCall('addFilter', array(new Reference($filterServiceId)));
         }
+    }
+
+    protected function buildFilter(ContainerBuilder $container, $id, $filter)
+    {
+        $serviceId = $this->getFilterServiceId($id);
+        $definition = $container->setDefinition(
+            $serviceId,
+            new Definition(sprintf('%%nginx_push_stream.filter.%s.class%%', $filter['class']), array($filter))
+        );
+        return $serviceId;
+    }
+
+    protected function getFilterServiceId($id)
+    {
+        return sprintf('nginx_push_stream.%s_filter', $id);
     }
 }
