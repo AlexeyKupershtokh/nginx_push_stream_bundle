@@ -1,7 +1,7 @@
 parameters:
     nginx_push_stream.connection.class: Alawar\NginxPushStreamBundle\Connection\Connection
-    nginx_push_stream.filter.hash.class: Alawar\NginxPushStreamBundle\Enclose\HashEnclose
-    nginx_push_stream.filter.prefix.class: Alawar\NginxPushStreamBundle\Enclose\PrefixEnclose
+    nginx_push_stream.filter.hash.class: Alawar\NginxPushStreamBundle\Filter\Hash
+    nginx_push_stream.filter.prefix.class: Alawar\NginxPushStreamBundle\Filter\Prefix
 
 services:
     nginx_push_stream.connection_prototype:
