@@ -10,12 +10,14 @@ class DefaultController extends Controller
 {
     public function getSubUrlsAction($tokens)
     {
-        return new Response(json_encode($tokens));
+        $tokensArray = explode(',', $tokens);
+        $subUrls = $this->get('nginx_push_stream.default_connection')->getSubUrls($tokensArray);
+        return $this->render('NginxPushStreamBundle:Default:index.html.twig', array('subUrls' => $subUrls));
+        //return new Response(json_encode($subUrls), 200, array('Content-type' => 'text/json'));
     }
 
     public function pubAction(Request $request)
     {
-        $this->get('nginx_push_stream.default_connection');
         return new Response(json_encode('ok'));
     }
 }
