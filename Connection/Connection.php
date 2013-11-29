@@ -4,8 +4,46 @@ namespace Alawar\NginxPushStreamBundle\Connection;
 
 class Connection
 {
-    public function __construct($pub_url, $sub_urls)
+    protected $pubUrl;
+    protected $subUrls;
+    protected $filters = array();
+
+    public function __construct($pubUrl, $subUrls)
     {
-        var_dump($pub_url, $sub_urls);
+        $this->pubUrl = $pubUrl;
+        $this->subUrls = $subUrls;
+    }
+
+    public function addFilter($filter)
+    {
+        $this->filters[] = $filter;
+    }
+
+    public function filter($data)
+    {
+        foreach ($this->filters as $filter) {
+            $data = $filter->filter($data);
+        }
+        return $data;
+    }
+
+    public function filterTokens(array $tokens)
+    {
+        $res = array();
+        foreach ($tokens as $token) {
+            $res[] = $this->filter($token);
+        }
+        return $res;
+    }
+
+    public function getSubUrls($tokens)
+    {
+        $filteredTokens = $this->filterTokens($tokens);
+        $tokensString = join('/', $filteredTokens);
+        $res = array();
+        foreach ($this->subUrls as $type => $subUrl) {
+            $res[$type] = str_replace('{tokens}', $tokensString, $subUrl);
+        }
+        return $res;
     }
 }
