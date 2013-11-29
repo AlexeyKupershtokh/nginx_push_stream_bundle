@@ -11,6 +11,6 @@ class Hash implements FilterInterface
 
     public function filter($data)
     {
-        return hash_hmac('md5', $data, $this->config['secret']);
+        return hash_hmac($this->config['algo'], $data, $this->config['secret']);
     }
 }

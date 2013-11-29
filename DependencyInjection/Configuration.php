@@ -87,7 +87,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->example(array(
-                        'hash' => array('class' => 'hash', 'secret' => 'mysecret'),
+                        'hash' => array('class' => 'hash', 'secret' => 'mysecret', 'algo' => 'md5'),
                         'prefix' => array('class' => 'prefix', 'prefix' => 'myapp_'),
                     ))
                 ->end()
