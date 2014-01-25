@@ -1,6 +1,6 @@
 <?php
 
-namespace Alawar\NginxPushStreamBundle\Connection;
+namespace Alawar\NginxPushStreamBundle;
 
 class Connection
 {
@@ -44,6 +44,13 @@ class Connection
         foreach ($this->subUrls as $type => $subUrl) {
             $res[$type] = str_replace('{tokens}', $tokensString, $subUrl);
         }
+        return $res;
+    }
+
+    public function getPubUrl($token)
+    {
+        $filteredToken = $this->filter($token);
+        $res = str_replace('{token}', $filteredToken, $this->pubUrl);
         return $res;
     }
 }
