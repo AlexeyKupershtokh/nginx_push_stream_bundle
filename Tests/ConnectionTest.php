@@ -51,9 +51,32 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testPubUrl() {
+    public function testPubUrl()
+    {
         $c = new Connection($this->pubUrl, $this->subUrls);
-        $value = $c->getPubUrl('token');
-        $this->assertEquals('http://localhost/pub?id=token', $value);
+        $value = $c->getPubUrl('token1');
+        $this->assertEquals('http://localhost/pub?id=token1', $value);
+    }
+
+    public function testPubUrlWFilters()
+    {
+        $c = new Connection($this->pubUrl, $this->subUrls);
+        $c->addFilter(new Prefix(array('prefix' => 'pref_')));
+        $value = $c->getPubUrl('token1');
+        $this->assertEquals('http://localhost/pub?id=pref_token1', $value);
+    }
+
+    public function testSubUrls()
+    {
+        $c = new Connection($this->pubUrl, $this->subUrls);
+        $c->addFilter(new Prefix(array('prefix' => 'pref_')));
+        $value = $c->getSubUrls(array('token1', 'token2'));
+        $this->assertEquals(
+            array(
+                'polling' => 'http://localhost/sub-p/pref_token1/pref_token2',
+                'long-polling' => 'http://localhost/sub-lp/pref_token1/pref_token2'
+            ),
+            $value
+        );
     }
 }
