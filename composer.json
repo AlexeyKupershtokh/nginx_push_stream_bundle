@@ -1,0 +1,15 @@
+{
+    "name": "alawar/nginx_push_stream_bundle",
+    "authors": [
+        {
+            "name": "Alexey Kupershtokh",
+            "email": "alexey.kupershtokh@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": { "Alawar\\NginxPushStreamBundle\\": "" }
+    }
+}
