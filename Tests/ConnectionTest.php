@@ -69,6 +69,19 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
     public function testSubUrls()
     {
         $c = new Connection($this->pubUrl, $this->subUrls);
+        $value = $c->getSubUrls(array('token1', 'token2'));
+        $this->assertEquals(
+            array(
+                'polling' => 'http://localhost/sub-p/token1/token2',
+                'long-polling' => 'http://localhost/sub-lp/token1/token2'
+            ),
+            $value
+        );
+    }
+
+    public function testSubUrlsWFilters()
+    {
+        $c = new Connection($this->pubUrl, $this->subUrls);
         $c->addFilter(new Prefix(array('prefix' => 'pref_')));
         $value = $c->getSubUrls(array('token1', 'token2'));
         $this->assertEquals(
