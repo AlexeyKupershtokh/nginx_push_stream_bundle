@@ -2,23 +2,47 @@
 
 namespace Alawar\NginxPushStreamBundle;
 
+use Alawar\NginxPushStreamBundle\Filter\FilterInterface;
+
 class Connection
 {
+    /**
+     * @var string
+     */
     protected $pubUrl;
+
+    /**
+     * @var array
+     */
     protected $subUrls;
+
+    /**
+     * @var FilterInterface[]
+     */
     protected $filters = array();
 
+    /**
+     * @param $pubUrl string
+     * @param $subUrls array
+     */
     public function __construct($pubUrl, $subUrls)
     {
         $this->pubUrl = $pubUrl;
         $this->subUrls = $subUrls;
     }
 
-    public function addFilter($filter)
+    /**
+     * @param FilterInterface $filter
+     */
+    public function addFilter(FilterInterface $filter)
     {
         $this->filters[] = $filter;
     }
 
+    /**
+     * @param $data string
+     * @return string
+     */
     public function filter($data)
     {
         foreach ($this->filters as $filter) {
@@ -27,6 +51,10 @@ class Connection
         return $data;
     }
 
+    /**
+     * @param array $tokens
+     * @return array
+     */
     public function filterTokens(array $tokens)
     {
         $res = array();
@@ -36,7 +64,11 @@ class Connection
         return $res;
     }
 
-    public function getSubUrls($tokens)
+    /**
+     * @param array $tokens
+     * @return array
+     */
+    public function getSubUrls(array $tokens)
     {
         $filteredTokens = $this->filterTokens($tokens);
         $tokensString = join('/', $filteredTokens);
@@ -47,6 +79,10 @@ class Connection
         return $res;
     }
 
+    /**
+     * @param $token string
+     * @return string
+     */
     public function getPubUrl($token)
     {
         $filteredToken = $this->filter($token);
