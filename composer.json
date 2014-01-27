@@ -7,9 +7,12 @@
         }
     ],
     "require": {
-
     },
     "autoload": {
         "psr-4": { "Alawar\\NginxPushStreamBundle\\": "" }
+    },
+    "require-dev": {
+        "symfony/framework-bundle": "~2.2",
+        "satooshi/php-coveralls": "dev-master"
     }
 }
