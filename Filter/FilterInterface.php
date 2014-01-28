@@ -1,5 +1,8 @@
 <?php
 
+
+// @codeCoverageIgnoreStart
+
 namespace Alawar\NginxPushStreamBundle\Filter;
 
 interface FilterInterface
