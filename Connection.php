@@ -144,6 +144,8 @@ class Connection
             $headers['Event-Type'] = preg_replace('/\\r\\n/', '', $type);
         }
 
+        $headers['Content-Type'] = 'application/json';
+
         $msg['data'] = $data;
 
         $json = json_encode($msg);
