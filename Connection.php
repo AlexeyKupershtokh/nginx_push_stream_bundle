@@ -3,6 +3,8 @@
 namespace Alawar\NginxPushStreamBundle;
 
 use Alawar\NginxPushStreamBundle\Filter\FilterInterface;
+use Alawar\NginxPushStreamBundle\Http\SenderInterface;
+use Alawar\NginxPushStreamBundle\IdGenerator\IdGeneratorInterface;
 
 class Connection
 {
@@ -20,6 +22,16 @@ class Connection
      * @var FilterInterface[]
      */
     protected $filters = array();
+
+    /**
+     * @var IdGeneratorInterface
+     */
+    protected $idGenerator = null;
+
+    /**
+     * @var SenderInterface
+     */
+    protected $sender = null;
 
     /**
      * @param $pubUrl string
@@ -65,6 +77,22 @@ class Connection
     }
 
     /**
+     * @param IdGeneratorInterface $idGenerator
+     */
+    public function setIdGenerator(IdGeneratorInterface $idGenerator)
+    {
+        $this->idGenerator = $idGenerator;
+    }
+
+    /**
+     * @param SenderInterface $sender
+     */
+    public function setSender(SenderInterface $sender)
+    {
+        $this->sender = $sender;
+    }
+
+    /**
      * @param array $tokens
      * @return array
      */
@@ -88,5 +116,40 @@ class Connection
         $filteredToken = $this->filter($token);
         $res = str_replace('{token}', $filteredToken, $this->pubUrl);
         return $res;
+    }
+
+    public function send($token, $data, $type = null, $id = null)
+    {
+        if (!$this->sender) {
+            return false;
+        }
+
+        $url = $this->getPubUrl($token);
+
+        if ($id === null && $this->idGenerator) {
+            $id = $this->idGenerator->generate();
+        }
+
+        $msg = array();
+        $msg['token'] = $token;
+
+        $headers = array();
+        if ($id !== null) {
+            $msg['id'] = $id;
+            $headers['Event-ID'] = preg_replace('/\\r\\n/', '', $id);
+        }
+
+        if ($type !== null) {
+            $msg['type'] = $type;
+            $headers['Event-Type'] = preg_replace('/\\r\\n/', '', $type);
+        }
+
+        $msg['data'] = $data;
+
+        $json = json_encode($msg);
+
+        $body = $json . "\r\n";
+
+        return $this->sender->send($url, $body, $headers);
     }
 }
