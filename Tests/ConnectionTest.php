@@ -94,6 +94,13 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testWoSender()
+    {
+        $c = new Connection($this->pubUrl, $this->subUrls);
+        $return = $c->send('123', array('type' => 'message', 'from' => 's', 'text' => 'Yay!'), 'new_message', 1);
+        $this->assertFalse($return);
+    }
+
     public function testSending()
     {
         $mock = $this->getMock('Alawar\NginxPushStreamBundle\Http\Sender');
