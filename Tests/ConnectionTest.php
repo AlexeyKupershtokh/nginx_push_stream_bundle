@@ -5,6 +5,7 @@ namespace Alawar\NginxPushStreamBundle\Tests\Connection;
 use Alawar\NginxPushStreamBundle\Connection;
 use Alawar\NginxPushStreamBundle\Filter\Prefix;
 use Alawar\NginxPushStreamBundle\Filter\Hash;
+use Alawar\NginxPushStreamBundle\IdGenerator\IdGenerator;
 
 class ConnectionTest extends \PHPUnit_Framework_TestCase
 {
@@ -110,4 +111,47 @@ class ConnectionTest extends \PHPUnit_Framework_TestCase
         $c->setSender($mock);
         $c->send('123', array('type' => 'message', 'from' => 's', 'text' => 'Yay!'), 'new_message', 1);
     }
+
+    public function testSendingWoId()
+    {
+        $mock = $this->getMock('Alawar\NginxPushStreamBundle\Http\Sender');
+        $mock->expects($this->once())->method('send')->with(
+            'http://localhost/pub?id=123',
+            '{"token":"123","type":"new_message","data":{"type":"message","from":"s","text":"Yay!"}}' . "\r\n",
+            array(
+                'Event-Type' => 'new_message',
+                'Content-Type' => 'application/json'
+            )
+        );
+
+        $c = new Connection($this->pubUrl, $this->subUrls);
+        $c->setSender($mock);
+        $c->send('123', array('type' => 'message', 'from' => 's', 'text' => 'Yay!'), 'new_message');
+    }
+
+    public function testSendingWoIdButWithGenerator()
+    {
+        $generator = new IdGenerator();
+        $id = $generator->generate();
+
+        $generatorMock = $this->getMock('Alawar\NginxPushStreamBundle\IdGenerator\IdGenerator');
+        $generatorMock->expects($this->once())->method('generate')->with()->will($this->returnValue($id));
+
+        $mock = $this->getMock('Alawar\NginxPushStreamBundle\Http\Sender');
+        $mock->expects($this->once())->method('send')->with(
+            'http://localhost/pub?id=123',
+            '{"token":"123","id":"' . $id . '","type":"new_message","data":{"type":"message","from":"s","text":"Yay!"}}' . "\r\n",
+            array(
+                'Event-ID' => $id,
+                'Event-Type' => 'new_message',
+                'Content-Type' => 'application/json'
+            )
+        );
+
+        $c = new Connection($this->pubUrl, $this->subUrls);
+        $c->setIdGenerator($generatorMock);
+        $c->setSender($mock);
+        $c->send('123', array('type' => 'message', 'from' => 's', 'text' => 'Yay!'), 'new_message');
+    }
+
 }
