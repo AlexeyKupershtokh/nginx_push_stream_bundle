@@ -79,6 +79,7 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
         $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
         $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'addFilter');
+        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'addFilter');
     }
 
     protected function getContainer(array $config = array())
