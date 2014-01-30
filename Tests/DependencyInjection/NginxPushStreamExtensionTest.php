@@ -68,8 +68,8 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
                     'polling'      => 'http://localhost/sub-p/{tokens}',
                 ),
                 'filters' => array(
-                    'hash' => array('secret' => 'x'),
-                    'prefix' => array('prefix' => 'x'),
+                    'hash' => array('class' => 'hash', 'secret' => 'x'),
+                    'prefix' => array('class' => 'prefix', 'prefix' => 'x'),
                 )
             )
         );
