@@ -32,11 +32,11 @@ class NginxPushStreamExtension extends Extension
             $this->buildConnection($container, $name, $connection);
         }
 
-        if (isset($config['shared_filters']) && is_array($config['shared_filters'])) {
+        /*if (isset($config['shared_filters']) && is_array($config['shared_filters'])) {
             foreach ($config['shared_filters'] as $id => $filter) {
                 $this->buildFilter($container, $id, $filter);
             }
-        }
+        }*/
     }
 
     protected function buildConnection(ContainerBuilder $container, $name, $connection)
