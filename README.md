@@ -3,7 +3,7 @@
 
 nginx_push_stream_bundle
 ========================
-A PHP bundle to assist your nginx_push_stream_module installation:
+A PHP bundle to assist your [nginx_push_stream_module](https://github.com/wandenberg/nginx-push-stream-module) installation:
  1. Generate links on server side.
  2. Publish messages.
  3. Automatically generate ids for messages on server side.
