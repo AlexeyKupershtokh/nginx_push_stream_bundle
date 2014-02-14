@@ -11,6 +11,12 @@ class Hash implements FilterInterface
 
     public function filter($data)
     {
-        return hash_hmac($this->config['algo'], $data, $this->config['secret']);
+        $backtrack = "";
+        if (preg_match('/\\.b\d+$/', $data, $matches)) {
+            $backtrack = $matches[0];
+            $data = substr($data, 0, -strlen($backtrack));
+        }
+        $hashResult = hash_hmac($this->config['algo'], $data, $this->config['secret']);
+        return $hashResult . $backtrack;
     }
 }

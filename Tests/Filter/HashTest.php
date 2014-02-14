@@ -26,4 +26,11 @@ class HashTest extends \PHPUnit_Framework_TestCase
         $value = $filter->filter('123');
         $this->assertEquals('de3c4e333cd84943bb237793e9597a3bf8cc8bb7', $value);
     }
+
+    public function testSha1Backtrack()
+    {
+        $filter = new Hash(array('algo' => 'sha1', 'secret' => 'x'));
+        $value = $filter->filter('123.b199');
+        $this->assertEquals('de3c4e333cd84943bb237793e9597a3bf8cc8bb7.b199', $value);
+    }
 }
