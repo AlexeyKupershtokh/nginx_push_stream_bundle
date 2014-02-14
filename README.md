@@ -1,9 +1,10 @@
 [![Build Status](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle.png?branch=master)](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Coverage Status](https://coveralls.io/repos/AlexeyKupershtokh/nginx_push_stream_bundle/badge.png)](https://coveralls.io/r/AlexeyKupershtokh/nginx_push_stream_bundle)
+[![Dependency Status](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle.png)](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle)
 
 nginx_push_stream_bundle
 ========================
-A PHP bundle to assist your nginx_push_stream_module installation:
+A PHP bundle to assist your [nginx_push_stream_module](https://github.com/wandenberg/nginx-push-stream-module) installation:
  1. Generate links on server side.
  2. Publish messages.
  3. Automatically generate ids for messages on server side.
