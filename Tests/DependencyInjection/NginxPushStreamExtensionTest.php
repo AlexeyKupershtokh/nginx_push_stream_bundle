@@ -30,6 +30,9 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
         $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
         $this->assertEquals('nginx_push_stream.connection_prototype', $defaultConnection->getParent());
+
+        $connection = $container->get('nginx_push_stream.default_connection');
+        $this->assertInstanceOf('\Alawar\NginxPushStreamBundle\Connection', $connection);
     }
 
     public function testManyConnections()

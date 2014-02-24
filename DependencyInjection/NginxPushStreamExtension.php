@@ -46,6 +46,8 @@ class NginxPushStreamExtension extends Extension
             new DefinitionDecorator('nginx_push_stream.connection_prototype')
         );
 
+        $definition->setClass('%nginx_push_stream.connection.class%');
+
         $definition->setArguments(array($connection['pub_url'], $connection['sub_urls']));
         foreach ($connection['filters'] as $id => $filter) {
             $filterServiceId = $this->buildFilter($container, $id, $filter);
