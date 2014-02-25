@@ -1,6 +1,10 @@
 [![Build Status](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle.png?branch=master)](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Coverage Status](https://coveralls.io/repos/AlexeyKupershtokh/nginx_push_stream_bundle/badge.png)](https://coveralls.io/r/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Dependency Status](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle.png)](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle)
+[![Latest Stable Version](https://poser.pugx.org/alawar/nginx_push_stream_bundle/v/stable.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
+[![Total Downloads](https://poser.pugx.org/alawar/nginx_push_stream_bundle/downloads.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
+[![Latest Unstable Version](https://poser.pugx.org/alawar/nginx_push_stream_bundle/v/unstable.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
+[![License](https://poser.pugx.org/alawar/nginx_push_stream_bundle/license.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
 
 nginx_push_stream_bundle
 ========================
