@@ -43,10 +43,12 @@ class NginxPushStreamExtension extends Extension
         $definition->setArguments(array($connection['pub_url'], $connection['sub_urls']));
 
         // add id generator reference
-        if ($connection['id_generator'] === true) {
-            $definition->addMethodCall('setIdGenerator', array(new Reference('nginx_push_stream.id_generator')));
-        } elseif (is_string($connection['id_generator'])) {
-            $definition->addMethodCall('setIdGenerator', array(new Reference($connection['id_generator'])));
+        if (isset($connection['id_generator'])) {
+            if ($connection['id_generator'] === true) {
+                $definition->addMethodCall('setIdGenerator', array(new Reference('nginx_push_stream.id_generator')));
+            } elseif (is_string($connection['id_generator'])) {
+                $definition->addMethodCall('setIdGenerator', array(new Reference($connection['id_generator'])));
+            }
         }
 
         // add filter references
