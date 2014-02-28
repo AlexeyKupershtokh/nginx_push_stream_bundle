@@ -11,6 +11,10 @@
          syntaxCheck="false"
          bootstrap="vendor/autoload.php"
 >
+    <php>
+        <ini name="error_reporting" value="32767" />
+    </php>
+
     <testsuites>
         <testsuite name="Alawar Nginx Push Stream Bundle Test Suite">
             <directory>./Tests/</directory>
