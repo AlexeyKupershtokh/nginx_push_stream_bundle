@@ -31,24 +31,25 @@ class NginxPushStreamExtension extends Extension
         foreach ($config['connections'] as $name => $connection) {
             $this->buildConnection($container, $name, $connection);
         }
-
-        /*if (isset($config['shared_filters']) && is_array($config['shared_filters'])) {
-            foreach ($config['shared_filters'] as $id => $filter) {
-                $this->buildFilter($container, $id, $filter);
-            }
-        }*/
     }
 
     protected function buildConnection(ContainerBuilder $container, $name, $connection)
     {
+        $serviceId = $this->getConnectionServiceId($name);
         $definition = $container->setDefinition(
-            sprintf('nginx_push_stream.%s_connection', $name),
-            new DefinitionDecorator('nginx_push_stream.connection_prototype')
+            $serviceId,
+            new Definition('%nginx_push_stream.connection.class%')
         );
-
-        $definition->setClass('%nginx_push_stream.connection.class%');
-
         $definition->setArguments(array($connection['pub_url'], $connection['sub_urls']));
+
+        // add id generator reference
+        if ($connection['id_generator'] === true) {
+            $definition->addMethodCall('setIdGenerator', array(new Reference('nginx_push_stream.id_generator')));
+        } elseif (is_string($connection['id_generator'])) {
+            $definition->addMethodCall('setIdGenerator', array(new Reference($connection['id_generator'])));
+        }
+
+        // add filter references
         foreach ($connection['filters'] as $id => $filter) {
             $filterServiceId = $this->buildFilter($container, $id, $filter);
             $definition->addMethodCall('addFilter', array(new Reference($filterServiceId)));
@@ -63,6 +64,11 @@ class NginxPushStreamExtension extends Extension
             new Definition(sprintf('%%nginx_push_stream.filter.%s.class%%', $filter['class']), array($filter))
         );
         return $serviceId;
+    }
+
+    protected function getConnectionServiceId($id)
+    {
+        return sprintf('nginx_push_stream.%s_connection', $id);
     }
 
     protected function getFilterServiceId($id)

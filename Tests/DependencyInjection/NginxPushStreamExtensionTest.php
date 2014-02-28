@@ -5,6 +5,7 @@ namespace Alawar\NginxPushStreamBundle\Tests\Connection\DependencyInjection;
 use Alawar\NginxPushStreamBundle\DependencyInjection\NginxPushStreamExtension;
 use Alawar\NginxPushStreamBundle\Tests\DependencyInjection\DependencyInjectionTest;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class NginxPushStreamExtensionTest extends DependencyInjectionTest
 {
@@ -22,14 +23,10 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
 
         $container = $this->getContainer($configs);
 
-        $this->assertTrue($container->hasDefinition('nginx_push_stream.connection_prototype'));
-
-        $connectionPrototype = $container->getDefinition('nginx_push_stream.connection_prototype');
-        $this->assertDICDefinitionClass($connectionPrototype, '%nginx_push_stream.connection.class%');
-
         $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
         $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
-        $this->assertEquals('nginx_push_stream.connection_prototype', $defaultConnection->getParent());
+
+        $this->assertCount(0, $defaultConnection->getMethodCalls());
 
         $connection = $container->get('nginx_push_stream.default_connection');
         $this->assertInstanceOf('\Alawar\NginxPushStreamBundle\Connection', $connection);
@@ -62,6 +59,49 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('nginx_push_stream.bar_connection'));
     }
 
+    public function testIdGenerator()
+    {
+        $configs = array(
+            array(
+                'pub_url'  => 'http://localhost/pub?id={token}',
+                'sub_urls' => array(
+                    'polling'      => 'http://localhost/sub-p/{tokens}',
+                ),
+                'id_generator' => true,
+            )
+        );
+
+        $container = $this->getContainer($configs);
+
+        $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
+        $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
+        $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'setIdGenerator', array(
+                new Reference('nginx_push_stream.id_generator')
+        ));
+    }
+
+    public function testIdGeneratorCustomService()
+    {
+        $configs = array(
+            array(
+                'pub_url'  => 'http://localhost/pub?id={token}',
+                'sub_urls' => array(
+                    'polling'      => 'http://localhost/sub-p/{tokens}',
+                ),
+                'id_generator' => 'nginx_push_stream.my_id_generator',
+            )
+        );
+
+        $container = $this->getContainer($configs);
+
+        $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
+        $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
+        $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'setIdGenerator', array(
+                new Reference('nginx_push_stream.my_id_generator')
+        ));
+    }
+
+
     public function testFilters()
     {
         $configs = array(
@@ -81,8 +121,20 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
 
         $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
         $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
-        $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'addFilter');
-        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'addFilter');
+        $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'addFilter', array(
+                new Reference('nginx_push_stream.hash_filter')
+        ));
+        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'addFilter', array(
+                new Reference('nginx_push_stream.prefix_filter')
+        ));
+
+        $this->assertTrue($container->hasDefinition('nginx_push_stream.hash_filter'));
+        $hashFilterDefinition = $container->getDefinition('nginx_push_stream.hash_filter');
+        $this->assertDICDefinitionClass($hashFilterDefinition, '%nginx_push_stream.filter.hash.class%');
+
+        $this->assertTrue($container->hasDefinition('nginx_push_stream.prefix_filter'));
+        $prefixFilterDefinition = $container->getDefinition('nginx_push_stream.prefix_filter');
+        $this->assertDICDefinitionClass($prefixFilterDefinition, '%nginx_push_stream.filter.prefix.class%');
     }
 
     protected function getContainer(array $config = array())

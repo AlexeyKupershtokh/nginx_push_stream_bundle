@@ -2,6 +2,7 @@
 
 namespace Alawar\NginxPushStreamBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -40,20 +41,20 @@ class Configuration implements ConfigurationInterface
             ->append($this->getConnectionsNode())
         ->end();
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
         return $treeBuilder;
     }
 
+    /**
+     * Builds a node to handle connection configs
+     *
+     * @return ArrayNodeDefinition
+     */
     public function getConnectionsNode()
     {
         $treeBuilder = new TreeBuilder();
         $node = $treeBuilder->root('connections');
 
-        /** @var $connectionNode ArrayNodeDefinition */
-        $connectionNode = $node
+        $node
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->fixXmlConfig('sub_url')
@@ -75,6 +76,9 @@ class Configuration implements ConfigurationInterface
                         'streaming' => 'http://example.com/sub-s/{tokens}',
                         'eventsource' => 'http://example.com/sub-ev/{tokens}',
                     ))
+                ->end()
+                ->scalarNode('id_generator')
+                    ->example(true)
                 ->end()
                 ->arrayNode('filters')
                     ->performNoDeepMerging()
