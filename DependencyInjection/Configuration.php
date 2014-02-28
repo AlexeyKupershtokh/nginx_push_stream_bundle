@@ -78,6 +78,7 @@ class Configuration implements ConfigurationInterface
                     ))
                 ->end()
                 ->scalarNode('id_generator')
+                    ->defaultValue(true)
                     ->example(true)
                 ->end()
                 ->arrayNode('filters')

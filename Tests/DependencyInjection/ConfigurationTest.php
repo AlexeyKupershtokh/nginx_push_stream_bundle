@@ -32,6 +32,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'polling'      => 'http://localhost/sub-p/{tokens}',
                             'long_polling' => 'http://localhost/sub-lp/{tokens}',
                         ),
+                        'id_generator' => true,
                         'filters'  => array(),
                     ),
                 ),
@@ -69,6 +70,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'polling'      => 'http://localhost/sub-p/{tokens}',
                             'long_polling' => 'http://localhost/sub-lp/{tokens}',
                         ),
+                        'id_generator' => true,
                         'filters'  => array(),
                     ),
                 ),
@@ -112,6 +114,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             'polling'      => 'http://localhost/sub-p/{tokens}',
                             'long_polling' => 'http://localhost/sub-lp/{tokens}',
                         ),
+                        'id_generator' => true,
                         'filters'  => array(
                             'hash'   => array(
                                 'class'  => 'hash',
