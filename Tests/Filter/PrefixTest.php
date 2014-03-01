@@ -2,8 +2,6 @@
 
 namespace Alawar\NginxPushStreamBundle\Tests\Filter;
 
-use Alawar\NginxPushStreamBundle\Filter\Hash;
-use Alawar\NginxPushStreamBundle\Filter\FilterInterface;
 use Alawar\NginxPushStreamBundle\Filter\Prefix;
 
 class PrefixTest extends \PHPUnit_Framework_TestCase

@@ -14,6 +14,9 @@ class Prefix implements FilterInterface
         $this->config = $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function filter($data)
     {
         return $this->config['prefix'] . $data;

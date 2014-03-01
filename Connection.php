@@ -93,7 +93,7 @@ class Connection
     }
 
     /**
-     * @param array $tokens
+     * @param string[] $tokens
      * @return array
      */
     public function getSubUrls(array $tokens)
@@ -118,6 +118,13 @@ class Connection
         return $res;
     }
 
+    /**
+     * @param string $token
+     * @param string $data
+     * @param string $type
+     * @param string $id
+     * @return bool
+     */
     public function send($token, $data, $type = null, $id = null)
     {
         if (!$this->sender) {

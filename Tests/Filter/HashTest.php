@@ -3,7 +3,6 @@
 namespace Alawar\NginxPushStreamBundle\Tests\Filter;
 
 use Alawar\NginxPushStreamBundle\Filter\Hash;
-use Alawar\NginxPushStreamBundle\Filter\FilterInterface;
 
 class HashTest extends \PHPUnit_Framework_TestCase
 {

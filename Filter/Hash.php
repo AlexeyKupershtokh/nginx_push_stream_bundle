@@ -14,6 +14,9 @@ class Hash implements FilterInterface
         $this->config = $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function filter($data)
     {
         $backtrack = "";
