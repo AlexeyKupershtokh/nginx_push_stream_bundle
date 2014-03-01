@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle.png?branch=master)](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Coverage Status](https://coveralls.io/repos/AlexeyKupershtokh/nginx_push_stream_bundle/badge.png)](https://coveralls.io/r/AlexeyKupershtokh/nginx_push_stream_bundle)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/AlexeyKupershtokh/nginx_push_stream_bundle/badges/quality-score.png?s=5278748cb21882a393fef28c53be72b37d30bc88)](https://scrutinizer-ci.com/g/AlexeyKupershtokh/nginx_push_stream_bundle/)
 [![Dependency Status](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle.png)](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Latest Stable Version](https://poser.pugx.org/alawar/nginx_push_stream_bundle/v/stable.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
 [![Total Downloads](https://poser.pugx.org/alawar/nginx_push_stream_bundle/downloads.png)](https://packagist.org/packages/alawar/nginx_push_stream_bundle)
