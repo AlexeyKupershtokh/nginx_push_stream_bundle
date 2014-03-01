@@ -120,7 +120,7 @@ class Connection
 
     /**
      * @param string $token
-     * @param string $data
+     * @param mixed $data
      * @param string $type
      * @param string $id
      * @return bool
