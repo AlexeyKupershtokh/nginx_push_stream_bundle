@@ -8,7 +8,7 @@ namespace Alawar\NginxPushStreamBundle\Filter;
 interface FilterInterface
 {
     /**
-     * @param $data string
+     * @param string $data
      * @return string
      */
     public function filter($data);
