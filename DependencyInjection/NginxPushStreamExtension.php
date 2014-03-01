@@ -59,7 +59,7 @@ class NginxPushStreamExtension extends Extension
     protected function buildFilter(ContainerBuilder $container, $id, $filter)
     {
         $serviceId = $this->getFilterServiceId($id);
-        $definition = $container->setDefinition(
+        $container->setDefinition(
             $serviceId,
             new Definition(sprintf('%%nginx_push_stream.filter.%s.class%%', $filter['class']), array($filter))
         );
