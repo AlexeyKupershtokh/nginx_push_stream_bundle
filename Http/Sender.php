@@ -26,9 +26,9 @@ class Sender implements SenderInterface
     }
 
     /**
-     * @param $url string
-     * @param $body string
-     * @param $headers array
+     * @param string $url
+     * @param string $body
+     * @param string[] $headers
      * @return bool
      */
     public function send($url, $body, $headers)
