@@ -6,6 +6,7 @@
             "email": "alexey.kupershtokh@gmail.com"
         }
     ],
+    "license": "MIT",
     "require": {
         "guzzle/http": "~3.7"
     },
