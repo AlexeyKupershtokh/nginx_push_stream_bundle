@@ -14,7 +14,7 @@ A PHP bundle to assist your [nginx_push_stream_module](https://github.com/wanden
  2. Publish messages.
  3. Automatically generate ids for messages on server side.
  4. Filter tokens:
-   1. Hash token names in order to make them unpredictable by clients.
+   1. Hash token names in order to make them unpredictable and thus more secure.
    2. Prefix tokens to separate your applications sharing the same nginx_push_stream_module locations.
  
 Installation
