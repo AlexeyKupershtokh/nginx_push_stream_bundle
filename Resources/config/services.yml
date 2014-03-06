@@ -1,7 +1,7 @@
 parameters:
     nginx_push_stream.connection.class: Alawar\NginxPushStreamBundle\Connection
     nginx_push_stream.sender.class: Alawar\NginxPushStreamBundle\Http\Sender
-    nginx_push_stream.id_generator.class: \Alawar\NginxPushStreamBundle\IdGenerator\IdGenerator
+    nginx_push_stream.id_generator.class: Alawar\NginxPushStreamBundle\IdGenerator\IdGenerator
     nginx_push_stream.filter.hash.class: Alawar\NginxPushStreamBundle\Filter\Hash
     nginx_push_stream.filter.prefix.class: Alawar\NginxPushStreamBundle\Filter\Prefix
 
