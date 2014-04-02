@@ -30,6 +30,10 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
             new Reference('nginx_push_stream.id_generator')
         ));
 
+        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'setSender', array(
+            new Reference('nginx_push_stream.sender')
+        ));
+
         $connection = $container->get('nginx_push_stream.default_connection');
         $this->assertInstanceOf('\Alawar\NginxPushStreamBundle\Connection', $connection);
     }
@@ -61,7 +65,7 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('nginx_push_stream.bar_connection'));
     }
 
-    public function testIdGeneratorDisabled()
+    public function testIdGeneratorAndSenderDisabled()
     {
         $configs = array(
             array(
@@ -70,6 +74,7 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
                     'polling'      => 'http://localhost/sub-p/{tokens}',
                 ),
                 'id_generator' => false,
+                'sender' => false,
             )
         );
 
@@ -122,10 +127,11 @@ class NginxPushStreamExtensionTest extends DependencyInjectionTest
         $this->assertTrue($container->hasDefinition('nginx_push_stream.default_connection'));
         $defaultConnection = $container->getDefinition('nginx_push_stream.default_connection');
         $this->assertDICDefinitionMethodCallAt(0, $defaultConnection, 'setIdGenerator');
-        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'addFilter', array(
+        $this->assertDICDefinitionMethodCallAt(1, $defaultConnection, 'setSender');
+        $this->assertDICDefinitionMethodCallAt(2, $defaultConnection, 'addFilter', array(
                 new Reference('nginx_push_stream.hash_filter')
         ));
-        $this->assertDICDefinitionMethodCallAt(2, $defaultConnection, 'addFilter', array(
+        $this->assertDICDefinitionMethodCallAt(3, $defaultConnection, 'addFilter', array(
                 new Reference('nginx_push_stream.prefix_filter')
         ));
 

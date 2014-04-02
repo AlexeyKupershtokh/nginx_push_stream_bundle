@@ -8,3 +8,5 @@ parameters:
 services:
     nginx_push_stream.id_generator:
         class: %nginx_push_stream.id_generator.class%
+    nginx_push_stream.sender:
+        class: %nginx_push_stream.sender.class%

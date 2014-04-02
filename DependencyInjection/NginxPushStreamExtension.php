@@ -48,6 +48,13 @@ class NginxPushStreamExtension extends Extension
             $definition->addMethodCall('setIdGenerator', array(new Reference($connection['id_generator'])));
         }
 
+        // add sender reference
+        if ($connection['sender'] === true) {
+            $definition->addMethodCall('setSender', array(new Reference('nginx_push_stream.sender')));
+        } elseif (is_string($connection['sender'])) {
+            $definition->addMethodCall('setSender', array(new Reference($connection['sender'])));
+        }
+
         // add filter references
         foreach ($connection['filters'] as $id => $filter) {
             $filterServiceId = $this->buildFilter($container, $id, $filter);
