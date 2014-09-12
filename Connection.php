@@ -34,8 +34,8 @@ class Connection
     protected $sender = null;
 
     /**
-     * @param $pubUrl string
-     * @param $subUrls array
+     * @param string $pubUrl
+     * @param array $subUrls
      */
     public function __construct($pubUrl, $subUrls)
     {
@@ -52,7 +52,7 @@ class Connection
     }
 
     /**
-     * @param $data string
+     * @param string $data
      * @return string
      */
     public function filter($data)
@@ -64,8 +64,8 @@ class Connection
     }
 
     /**
-     * @param array $tokens
-     * @return array
+     * @param string[] $tokens
+     * @return string[]
      */
     public function filterTokens(array $tokens)
     {
