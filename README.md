@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle.png?branch=master)](https://travis-ci.org/AlexeyKupershtokh/nginx_push_stream_bundle)
+[![HHVM Status](http://hhvm.h4cc.de/badge/alawar/nginx_push_stream_bundle.svg)](http://hhvm.h4cc.de/package/alawar/nginx_push_stream_bundle)
 [![Coverage Status](https://coveralls.io/repos/AlexeyKupershtokh/nginx_push_stream_bundle/badge.png)](https://coveralls.io/r/AlexeyKupershtokh/nginx_push_stream_bundle)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/AlexeyKupershtokh/nginx_push_stream_bundle/badges/quality-score.png?s=5278748cb21882a393fef28c53be72b37d30bc88)](https://scrutinizer-ci.com/g/AlexeyKupershtokh/nginx_push_stream_bundle/)
 [![Dependency Status](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle.png)](https://gemnasium.com/AlexeyKupershtokh/nginx_push_stream_bundle)
