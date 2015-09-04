@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "guzzle/http": "~3.7"
+        "guzzle/guzzle": "~3.7"
     },
     "autoload": {
         "psr-4": { "Alawar\\NginxPushStreamBundle\\": "" }
